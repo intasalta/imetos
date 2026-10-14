@@ -40,13 +40,13 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(10) # Damos buen tiempo a que renderice la gráfica y botones
+            time.sleep(10) # Damos tiempo a que renderice la gráfica y botones
 
-            print(f"5. Descargando el archivo XLS para la estación {est_id}...")
+            print(f"5. Descargando el archivo para la estación {est_id}...")
             try:
-                with page.expect_download(timeout=30000) as download_info:
-                    # Buscamos el botón exactamente por el título o ícono de exportación XLS
-                    page.locator("button[title*='xls'], .fa-file-excel, span:has-text('xls')").first.click()
+                with page.expect_download(timeout=45000) as download_info:
+                    # Selector actualizado para buscar botones de exportación/descarga o formato Excel
+                    page.locator("button:has-text('Export'), button:has-text('Descargar'), [aria-label*='Excel'], [title*='Excel'], button[title*='xls'], .fa-file-excel").first.click()
                 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
@@ -54,6 +54,10 @@ def run():
                 print(f"¡Éxito! Archivo guardado como {filename}")
             except Exception as e:
                 print(f"Error al descargar la estación {est_id}: {e}")
+                # Toma una captura de pantalla para depurar visualmente en GitHub Actions si falla
+                error_screenshot = f"error_{est_id}.png"
+                page.screenshot(path=error_screenshot)
+                print(f"Captura de pantalla guardada como {error_screenshot}")
 
         browser.close()
 
