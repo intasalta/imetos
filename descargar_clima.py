@@ -9,7 +9,6 @@ ESTACIONES = ["00002586", "00002646"]
 
 def run():
     with sync_playwright() as p:
-        # Lanzamos el navegador en modo visible (headless=False por si quieres depurar) o True
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(accept_downloads=True)
         page = context.new_page()
@@ -17,39 +16,48 @@ def run():
         print("1. Accediendo a FieldClimate...")
         page.goto("https://fieldclimate.com/login", timeout=60000)
 
-        print("2. Esperando y rellenando credenciales...")
-        # Esperamos a que aparezca cualquier campo de entrada en la página
-        page.wait_for_selector("input", timeout=30000)
-        time.sleep(3)
+        print("2. Esperando a que cargue el formulario...")
+        # Damos un respiro para que carguen los elementos de la SPA
+        time.sleep(5)
 
-        # Buscamos de forma flexible el campo de usuario/email
-        email_input = page.locator("input[name*='email'], input[name*='user'], input[type='email'], input[type='text']").first
-        email_input.fill(USER)
-
-        # Buscamos de forma flexible el campo de contraseña
-        pass_input = page.locator("input[name*='pass'], input[type='password']").first
-        pass_input.fill(PASS)
-
-        print("3. Haciendo clic en iniciar sesión...")
-        # Hacemos clic en el botón de login
-        page.click("button[type='submit'], button:has-text('Login'), button:has-text('Sign in'), button:has-text('Entrar')")
+        print("3. Rellenando credenciales...")
+        # Buscamos los inputs por su posición o placeholder común de login
+        # Por lo general, el primer input es el usuario/email y el segundo la contraseña
+        inputs = page.locator("input")
         
-        # Esperamos a que termine de cargar el dashboard post-login
+        # Esperar a que al menos haya 2 inputs en pantalla
+        page.wait_for_selector("input", timeout=30000)
+        
+        # Rellenar email (primer input de texto o email)
+        inputs.nth(0).fill(USER)
+        time.sleep(1)
+        
+        # Rellenar contraseña (segundo input o el que sea de tipo password)
+        password_input = page.locator("input[type='password']").first
+        password_input.fill(PASS)
+        time.sleep(1)
+
+        print("4. Haciendo clic en iniciar sesión...")
+        # Buscamos el botón de submit o que contenga texto de acceso
+        page.locator("button[type='submit'], button:has-text('Login'), button:has-text('Sign'), button:has-text('Ingresar')").first.click()
+        
+        # Esperar a que la sesión inicie y redirija al dashboard
+        print("Esperando redirección del login...")
+        time.sleep(10)
         page.wait_for_load_state("networkidle")
-        time.sleep(10) # Espera prudencial para la redirección
 
         for est_id in ESTACIONES:
             station_url = f"https://fieldclimate.com/station/{est_id}/data"
-            print(f"4. Navegando a la estación {est_id}: {station_url}")
+            print(f"5. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
             time.sleep(8)
 
-            print(f"5. Descargando el archivo XLS para la estación {est_id}...")
+            print(f"6. Descargando el archivo XLS para la estación {est_id}...")
             try:
                 with page.expect_download() as download_info:
-                    # Buscamos el botón de descarga por título, icono o texto
-                    page.click("button[title*='xls'], button:has-text('xls'), .fa-file-excel, [tooltip*='xls'], button .fa-download")
+                    # Clic en el botón de exportación de Excel/XLS
+                    page.locator("button[title*='xls'], button:has-text('xls'), .fa-file-excel, [tooltip*='xls'], button .fa-download").first.click()
                 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
