@@ -45,51 +45,23 @@ def run():
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Intentamos ubicar el botón de descarga mediante múltiples alternativas directas
-                    # Buscamos botones en la barra superior de herramientas de gráficos
-                    download_clicked = False
+                    # Buscamos de manera directa por el título que muestra el tooltip en español o inglés
+                    download_button = page.locator("button[title*='Exportar'], button[title*='xls'], button:has(.fa-download), button:has(i.fa-download)").first
                     
-                    # Opción A: Buscar por botones que contengan íconos de descarga o exportación comunes
-                    selectors = [
-                        "button[title*='Download'], button[title*='Export'], button[title*='Excel'], button[title*='Descargar']",
-                        "button mat-icon:has-text('download'), button mat-icon:has-text('get_app')",
-                        ".fa-download, .fa-file-excel, .fa-file-csv",
-                        "button:has(.fa-download), button:has(.fa-file-excel)"
-                    ]
-                    
-                    for sel in selectors:
-                        loc = page.locator(sel).first
-                        if loc.count() > 0 and loc.is_visible():
-                            loc.click()
-                            download_clicked = True
-                            break
-                    
-                    # Opción B: Si los selectores anteriores no disparan el click, usamos JavaScript para buscar 
-                    # el botón de descarga en la barra superior (el que está antes del botón de tabla)
-                    if not download_clicked:
+                    if download_button.count() > 0 and download_button.is_visible():
+                        download_button.click()
+                    else:
+                        # Si no lo encuentra por selector directo, ejecutamos JS seguro para hacer clic en el botón de exportación
                         page.evaluate("""() => {
-                            // Buscamos todos los botones dentro del contenedor de la barra superior de herramientas
                             const buttons = Array.from(document.querySelectorAll('button'));
-                            // Filtramos o buscamos el botón que tenga un icono de descarga o esté en la posición de exportación
                             for (let btn of buttons) {
-                                if (btn.innerHTML.includes('fa-download') || btn.innerHTML.includes('download') || btn.getAttribute('aria-label')?.toLowerCase().includes('download')) {
+                                const title = btn.getAttribute('title') || '';
+                                if (title.toLowerCase().includes('exportar') || title.toLowerCase().includes('xls') || btn.innerHTML.includes('fa-download')) {
                                     btn.click();
-                                    return;
+                                    break;
                                 }
                             }
-                            // Alternativa por posición de los botones superiores en FieldClimate (tercer botón de la botonera derecha)
-                            const actionButtons = document.querySelectorAll('.mat-mdc-tooltip-trigger, button[mat-icon-button]');
-                            if (actionButtons.length >= 3) {
-                                // Por lo general el de descarga es de los primeros en la barra de herramientas de exportación
-                                actionButtons[0].click(); 
-                            }
                         """)
-
-                    # Comprobación por si aparece un menú flotante con la opción de formato XLS
-                    time.sleep(2)
-                    xls_option = page.locator("text=XLS, text=Excel, button:has-text('XLS')")
-                    if xls_option.count() > 0 and xls_option.first.is_visible():
-                        xls_option.first.click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
