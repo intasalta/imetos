@@ -40,19 +40,32 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo prudencial para que cargue la interfaz
+            time.sleep(15) # Tiempo para que cargue la interfaz completa
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Buscamos directamente el botón por su título visible en el tooltip de FieldClimate
-                    download_button = page.locator("button[title*='Exportar'], button[title*='xls'], button[title*='XLS']").first
+                    # Buscamos los botones de acción superior que contienen gráficos/iconos SVG
+                    action_buttons = page.locator("button:has(svg), button:has(mat-icon), button[mat-icon-button]")
                     
-                    if download_button.count() > 0:
-                        download_button.click()
-                    else:
-                        # Si no encuentra el título exacto, buscamos el botón dentro de la barra superior por su posición en la botonera
-                        page.locator("button[mat-icon-button]").nth(2).click()
+                    clicked = False
+                    count = action_buttons.count()
+                    
+                    # Iteramos sobre los botones de la barra superior haciendo hover y clic
+                    for i in range(count):
+                        btn = action_buttons.nth(i)
+                        try:
+                            btn.hover(timeout=1000)
+                            # Intentamos hacer clic; el botón de descarga XLS responderá a la descarga
+                            btn.click(timeout=1000)
+                            clicked = True
+                            break
+                        except Exception:
+                            continue
+                    
+                    if not clicked:
+                        # Respaldo: clic en el primer botón con SVG disponible
+                        page.locator("button:has(svg)").first.click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
