@@ -1,6 +1,7 @@
 import os
 import time
 import subprocess
+import re
 from playwright.sync_api import sync_playwright
 
 USER = os.environ.get("FC_USER")
@@ -47,13 +48,16 @@ def run():
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
+                # Paso 1: Clic en el botón de la barra superior para abrir el menú de exportación
+                page.evaluate("() => { const buttons = Array.from(document.querySelectorAll('button')); for (let btn of buttons) { const rect = btn.getBoundingClientRect(); if (rect.top > 200 && rect.top < 300 && rect.left > 700) { btn.click(); break; } } }")
+                
+                # Paso 2: Esperar el menú flotante y capturar la descarga al hacer clic en XLS
                 with page.expect_download(timeout=45000) as download_info:
-                    # Ejecutamos JS en una sola línea de manera limpia
-                    page.evaluate("() => { const buttons = Array.from(document.querySelectorAll('button')); for (let btn of buttons) { const rect = btn.getBoundingClientRect(); if (rect.top > 200 && rect.top < 300 && rect.left > 700) { btn.click(); break; } } }")
+                    # Esperamos a que el panel desplegable de Angular esté visible
+                    page.wait_for_selector(".cdk-overlay-pane", timeout=10000)
                     
-                    time.sleep(2)
-                    
-                    page.evaluate("() => { const items = Array.from(document.querySelectorAll('button, a, div, span, mat-option')); for (let item of items) { const text = item.innerText.toLowerCase(); if (text.includes('xls') || text.includes('excel') || text.includes('exportar')) { item.click(); break; } } }")
+                    # Hacemos clic en la opción de Excel/XLS dentro del menú flotante
+                    page.locator(".cdk-overlay-pane button, .cdk-overlay-pane a, .cdk-overlay-pane div").filter(has_text=re.compile("xls|excel|exportar", re.IGNORECASE)).first.click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
