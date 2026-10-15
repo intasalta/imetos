@@ -40,24 +40,53 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo prudencial para que cargue toda la gráfica y botones
+            time.sleep(15) # Tiempo prudencial para que cargue toda la interfaz y gráficos
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Alternativa 1: Buscar cualquier botón con etiqueta de descarga, icono de excel o SVG interno en la barra de herramientas
-                    # Alternativa 2: Localizamos el grupo de botones encima de la gráfica y seleccionamos el que corresponde a la descarga de Excel/XLS
-                    download_button = page.locator("button:has(mat-icon), button:has(i), [role='button']").filter(has_text="")
-                    
-                    # Buscamos de forma genérica el botón de exportación por clase o posición en la botonera superior
-                    # En la barra de herramientas, el botón de descarga XLS suele tener iconos asociados a archivos o descargas
-                    target_btn = page.locator("button[title*='xls'], button[title*='Exportar'], button:has(i.fa-download), .mat-mdc-tooltip-trigger").first
-                    
-                    if target_btn.count() > 0 and target_btn.is_visible():
-                        target_btn.click()
-                    else:
-                        # Fallback por selector amplio de botones de acción en la cabecera de datos
-                        page.locator(".fa-download, .fa-file-excel").first.click()
+                    # Ejecutamos un script en el navegador para hacer clic de forma segura en el botón de descarga XLS
+                    # buscando por el título exacto que aparece en el tooltip ("Exportar tabla como xls") o elementos de descarga cercanos
+                    clicked = page.evaluate("""() => {
+                        // Buscamos todos los botones o elementos interactivos de la página
+                        const elements = Array.from(document.querySelectorAll('button, [role="button"], mat-icon'));
+                        
+                        for (let el of elements) {
+                            const title = (el.getAttribute('title') || el.getAttribute('aria-label') || '').toLowerCase();
+                            const text = el.innerText.toLowerCase();
+                            
+                            // Coincidencia con el título exacto del botón de exportación
+                            if (title.includes('xls') || title.includes('exportar') || text.includes('xls')) {
+                                el.click();
+                                return true;
+                            }
+                        }
+                        
+                        // Plan B: Buscar botones en la botonera superior (el de descarga suele estar cerca de los controles de vista)
+                        const toolButtons = Array.from(document.querySelectorAll('button[mat-icon-button], .mat-mdc-icon-button'));
+                        for (let btn of toolButtons) {
+                            // Si contiene un icono o SVG relacionado con descarga / flecha hacia abajo
+                            if (btn.innerHTML.includes('download') || btn.innerHTML.includes('get_app') || btn.innerHTML.includes('svg')) {
+                                // Verificamos que no sea el botón de actualizar u otros
+                                if (!btn.innerText.includes('ACTUALIZAR')) {
+                                    btn.click();
+                                    return true;
+                                }
+                            }
+                        }
+                        
+                        // Plan C por posición genérica si los anteriores fallan: el tercer o cuarto botón de la botonera superior
+                        if (toolButtons.length > 2) {
+                            toolButtons[2].click();
+                            return true;
+                        }
+                        
+                        return false;
+                    })`;
+
+                    if (!clicked) {
+                        raise Exception("No se encontró el botón de descarga mediante JavaScript interactivo.")
+                    }
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
