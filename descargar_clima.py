@@ -40,19 +40,24 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(12) # Esperamos a que renderice la gráfica y los botones superiores
+            time.sleep(12)
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
-                # Localizamos el botón con el ícono de descarga (fa-download / fa-file-excel / fa-save)
-                download_button = page.locator(".fa-download, i.fa-download, button:has(.fa-download), .fa-file-excel").first
-                
                 with page.expect_download(timeout=45000) as download_info:
+                    # Apuntamos a los botones de la barra superior de exportación mediante sus índices o clases comunes de Angular Material
+                    # El botón de descarga suele ser el primero del grupo derecho de iconos
+                    download_button = page.locator("button[mat-icon-button], .mat-mdc-icon-button").filter(has=page.locator("mat-icon, i")).nth(4)
+                    
+                    # Si falla el índice anterior, probamos un selector alternativo por posicionamiento de SVG/íconos en la barra
+                    if not download_button.is_visible():
+                        download_button = page.locator("app-station-data-header button, .export-btn, button:has(mat-icon)").first
+                    
                     download_button.click()
                     
-                    # Si al hacer clic despliega un menú pequeño con la opción XLS/Excel/CSV, intentamos hacerle clic
+                    # Manejo por si despliega un menú de opciones (XLS/CSV)
                     time.sleep(2)
-                    sub_option = page.locator("text=XLS, text=Excel, text=CSV, button:has-text('XLS')")
+                    sub_option = page.locator("text=XLS, text=Excel, button:has-text('XLS')")
                     if sub_option.count() > 0 and sub_option.first.is_visible():
                         sub_option.first.click()
 
