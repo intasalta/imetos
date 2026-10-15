@@ -40,32 +40,22 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Damos tiempo a que carguen los componentes
+            time.sleep(12) # Esperamos a que renderice la gráfica y los botones superiores
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
-                with page.expect_download(timeout=45000) as download_info:
-                    # Selectores corregidos (sin prefijos 'css=')
-                    export_btn = page.locator(
-                        "button:has-text('Export'), "
-                        "button:has-text('Descargar'), "
-                        "button:has-text('XLS'), "
-                        "[aria-label*='Export'], "
-                        "[aria-label*='Download'], "
-                        "[aria-label*='Excel'], "
-                        ".mat-mdc-menu-trigger, "
-                        "mat-icon:has-text('get_app'), "
-                        "mat-icon:has-text('download')"
-                    ).first
-                    
-                    export_btn.click()
-                    
-                    # Si despliega un menú, hacemos clic en XLS
-                    time.sleep(2)
-                    xls_option = page.locator("button:has-text('XLS'), a:has-text('XLS'), span:has-text('XLS'), div:has-text('XLS')")
-                    if xls_option.count() > 0:
-                        xls_option.first.click()
+                # Localizamos el botón con el ícono de descarga (fa-download / fa-file-excel / fa-save)
+                download_button = page.locator(".fa-download, i.fa-download, button:has(.fa-download), .fa-file-excel").first
                 
+                with page.expect_download(timeout=45000) as download_info:
+                    download_button.click()
+                    
+                    # Si al hacer clic despliega un menú pequeño con la opción XLS/Excel/CSV, intentamos hacerle clic
+                    time.sleep(2)
+                    sub_option = page.locator("text=XLS, text=Excel, text=CSV, button:has-text('XLS')")
+                    if sub_option.count() > 0 and sub_option.first.is_visible():
+                        sub_option.first.click()
+
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
                 download.save_as(filename)
@@ -76,7 +66,7 @@ def run():
                 screenshot_name = f"error_{est_id}.png"
                 page.screenshot(path=screenshot_name, full_page=True)
                 print(f"Captura de pantalla guardada como {screenshot_name}")
-                raise e  # Fuerza el fallo para subir el artefacto de la captura
+                raise e
 
         browser.close()
 
