@@ -77,6 +77,7 @@ def run():
                 screenshot_name = f"error_{est_id}.png"
                 page.screenshot(path=screenshot_name, full_page=True)
                 print(f"Captura de pantalla guardada como {screenshot_name}")
+                raise e  # Fuerza el fallo del script para que se active la subida del artefacto
 
         browser.close()
 
