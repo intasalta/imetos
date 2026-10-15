@@ -40,12 +40,12 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Damos más tiempo para que carguen los componentes de la estación
+            time.sleep(15) # Damos tiempo a que carguen los componentes
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Probamos múltiples selectores amplios para botones de exportación en plataformas modernas
+                    # Selectores corregidos (sin prefijos 'css=')
                     export_btn = page.locator(
                         "button:has-text('Export'), "
                         "button:has-text('Descargar'), "
@@ -54,13 +54,13 @@ def run():
                         "[aria-label*='Download'], "
                         "[aria-label*='Excel'], "
                         ".mat-mdc-menu-trigger, "
-                        "css=mat-icon:has-text('get_app'), "
-                        "css=mat-icon:has-text('download')"
+                        "mat-icon:has-text('get_app'), "
+                        "mat-icon:has-text('download')"
                     ).first
                     
                     export_btn.click()
                     
-                    # Si es un menú desplegable, a veces hay que hacer un segundo clic en la opción XLS/Excel
+                    # Si despliega un menú, hacemos clic en XLS
                     time.sleep(2)
                     xls_option = page.locator("button:has-text('XLS'), a:has-text('XLS'), span:has-text('XLS'), div:has-text('XLS')")
                     if xls_option.count() > 0:
@@ -73,11 +73,10 @@ def run():
                 
             except Exception as e:
                 print(f"Error al descargar la estación {est_id}: {e}")
-                # Guardamos una captura de pantalla para inspeccionar el estado actual en el runner
                 screenshot_name = f"error_{est_id}.png"
                 page.screenshot(path=screenshot_name, full_page=True)
                 print(f"Captura de pantalla guardada como {screenshot_name}")
-                raise e  # Fuerza el fallo del script para que se active la subida del artefacto
+                raise e  # Fuerza el fallo para subir el artefacto de la captura
 
         browser.close()
 
