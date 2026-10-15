@@ -40,24 +40,43 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(10) # Damos tiempo a que renderice la gráfica y botones
+            time.sleep(15) # Damos más tiempo para que carguen los componentes de la estación
 
-            print(f"5. Descargando el archivo para la estación {est_id}...")
+            print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Selector actualizado para buscar botones de exportación/descarga o formato Excel
-                    page.locator("button:has-text('Export'), button:has-text('Descargar'), [aria-label*='Excel'], [title*='Excel'], button[title*='xls'], .fa-file-excel").first.click()
+                    # Probamos múltiples selectores amplios para botones de exportación en plataformas modernas
+                    export_btn = page.locator(
+                        "button:has-text('Export'), "
+                        "button:has-text('Descargar'), "
+                        "button:has-text('XLS'), "
+                        "[aria-label*='Export'], "
+                        "[aria-label*='Download'], "
+                        "[aria-label*='Excel'], "
+                        ".mat-mdc-menu-trigger, "
+                        "css=mat-icon:has-text('get_app'), "
+                        "css=mat-icon:has-text('download')"
+                    ).first
+                    
+                    export_btn.click()
+                    
+                    # Si es un menú desplegable, a veces hay que hacer un segundo clic en la opción XLS/Excel
+                    time.sleep(2)
+                    xls_option = page.locator("button:has-text('XLS'), a:has-text('XLS'), span:has-text('XLS'), div:has-text('XLS')")
+                    if xls_option.count() > 0:
+                        xls_option.first.click()
                 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
                 download.save_as(filename)
                 print(f"¡Éxito! Archivo guardado como {filename}")
+                
             except Exception as e:
                 print(f"Error al descargar la estación {est_id}: {e}")
-                # Toma una captura de pantalla para depurar visualmente en GitHub Actions si falla
-                error_screenshot = f"error_{est_id}.png"
-                page.screenshot(path=error_screenshot)
-                print(f"Captura de pantalla guardada como {error_screenshot}")
+                # Guardamos una captura de pantalla para inspeccionar el estado actual en el runner
+                screenshot_name = f"error_{est_id}.png"
+                page.screenshot(path=screenshot_name, full_page=True)
+                print(f"Captura de pantalla guardada como {screenshot_name}")
 
         browser.close()
 
