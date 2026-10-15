@@ -40,38 +40,37 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo prudencial para que cargue toda la interfaz y gráficos
+            time.sleep(15)
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Buscamos de manera muy amplia cualquier botón dentro de la sección de controles de datos
-                    # Usamos un selector basado en la barra de herramientas superior de las gráficas
-                    download_button = page.locator("button").filter(has=page.locator("mat-icon, svg, i")).first
-                    
-                    # Intentamos ubicar el botón por el orden en la botonera superior (el de descarga es de los primeros)
+                    # 1. Hacemos clic en el botón de exportación de la barra superior (encontrado por coordenadas)
                     buttons = page.locator("button")
                     count = buttons.count()
-                    
-                    clicked = False
                     for i in range(count):
                         b = buttons.nth(i)
-                        # Verificamos si el botón está visible en la zona superior de la gráfica
                         if b.is_visible():
                             box = b.bounding_box()
-                            # La barra de herramientas superior suele estar en un rango específico de coordenadas Y
-                            if box and 200 < box['y'] < 350: 
-                                # Probamos haciendo clic en los botones que están en esa barra horizontal
+                            if box and 200 < box['y'] < 350:
                                 try:
                                     b.click(timeout=2000)
-                                    clicked = True
                                     break
                                 except Exception:
                                     continue
                     
-                    if not clicked:
-                        # Fallback directo si no encuentra por coordenadas: clic en el botón de exportación general
-                        page.locator("button").nth(15).click()
+                    # 2. Esperamos a que se abra el menú flotante y hacemos clic en la opción de XLS/Excel o confirmar
+                    time.sleep(2)
+                    popup_options = page.locator("button, a, div, span").filter(has_text=re.compile("xls|excel|download|descargar", re.IGNORECASE))
+                    if popup_options.count() > 0:
+                        for j in range(popup_options.count()):
+                            opt = popup_options.nth(j)
+                            if opt.is_visible():
+                                try:
+                                    opt.click(timeout=1500)
+                                    break
+                                except Exception:
+                                    continue
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
