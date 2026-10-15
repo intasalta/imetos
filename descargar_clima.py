@@ -40,53 +40,19 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo prudencial para que cargue toda la interfaz y gráficos
+            time.sleep(15) # Tiempo prudencial para que cargue la interfaz
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Ejecutamos un script en el navegador para hacer clic de forma segura en el botón de descarga XLS
-                    # buscando por el título exacto que aparece en el tooltip ("Exportar tabla como xls") o elementos de descarga cercanos
-                    clicked = page.evaluate("""() => {
-                        // Buscamos todos los botones o elementos interactivos de la página
-                        const elements = Array.from(document.querySelectorAll('button, [role="button"], mat-icon'));
-                        
-                        for (let el of elements) {
-                            const title = (el.getAttribute('title') || el.getAttribute('aria-label') || '').toLowerCase();
-                            const text = el.innerText.toLowerCase();
-                            
-                            // Coincidencia con el título exacto del botón de exportación
-                            if (title.includes('xls') || title.includes('exportar') || text.includes('xls')) {
-                                el.click();
-                                return true;
-                            }
-                        }
-                        
-                        // Plan B: Buscar botones en la botonera superior (el de descarga suele estar cerca de los controles de vista)
-                        const toolButtons = Array.from(document.querySelectorAll('button[mat-icon-button], .mat-mdc-icon-button'));
-                        for (let btn of toolButtons) {
-                            // Si contiene un icono o SVG relacionado con descarga / flecha hacia abajo
-                            if (btn.innerHTML.includes('download') || btn.innerHTML.includes('get_app') || btn.innerHTML.includes('svg')) {
-                                // Verificamos que no sea el botón de actualizar u otros
-                                if (!btn.innerText.includes('ACTUALIZAR')) {
-                                    btn.click();
-                                    return true;
-                                }
-                            }
-                        }
-                        
-                        // Plan C por posición genérica si los anteriores fallan: el tercer o cuarto botón de la botonera superior
-                        if (toolButtons.length > 2) {
-                            toolButtons[2].click();
-                            return true;
-                        }
-                        
-                        return false;
-                    })`;
-
-                    if (!clicked) {
-                        raise Exception("No se encontró el botón de descarga mediante JavaScript interactivo.")
-                    }
+                    # Buscamos directamente el botón por su título visible en el tooltip de FieldClimate
+                    download_button = page.locator("button[title*='Exportar'], button[title*='xls'], button[title*='XLS']").first
+                    
+                    if download_button.count() > 0:
+                        download_button.click()
+                    else:
+                        # Si no encuentra el título exacto, buscamos el botón dentro de la barra superior por su posición en la botonera
+                        page.locator("button[mat-icon-button]").nth(2).click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
