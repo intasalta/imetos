@@ -48,33 +48,42 @@ def run():
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
+                # Paso A: Hacemos clic en el botón de exportación de la barra superior por coordenadas
+                buttons = page.locator("button")
+                count = buttons.count()
+                for i in range(count):
+                    b = buttons.nth(i)
+                    if b.is_visible():
+                        box = b.bounding_box()
+                        if box and 200 < box['y'] < 350:
+                            try:
+                                b.click(timeout=2000)
+                                break
+                            except Exception:
+                                continue
+                
+                time.sleep(2) # Pausa para que se abra el menú flotante
+
+                # Paso B: Iniciamos la espera de descarga y hacemos clic en la opción XLS/Excel dentro del menú desplegado
                 with page.expect_download(timeout=45000) as download_info:
-                    # Clic en el botón de exportación de la barra superior por coordenadas
-                    buttons = page.locator("button")
-                    count = buttons.count()
-                    for i in range(count):
-                        b = buttons.nth(i)
-                        if b.is_visible():
-                            box = b.bounding_box()
-                            if box and 200 < box['y'] < 350:
-                                try:
-                                    b.click(timeout=2000)
-                                    break
-                                except Exception:
-                                    continue
-                    
-                    # Esperar el menú flotante y hacer clic en la opción de XLS/Excel
-                    time.sleep(2)
-                    popup_options = page.locator("button, a, div, span").filter(has_text=re.compile("xls|excel|download|descargar", re.IGNORECASE))
+                    popup_options = page.locator("button, a, div, span, mat-option").filter(has_text=re.compile("xls|excel|download|descargar", re.IGNORECASE))
                     if popup_options.count() > 0:
+                        clicked_popup = False
                         for j in range(popup_options.count()):
                             opt = popup_options.nth(j)
                             if opt.is_visible():
                                 try:
                                     opt.click(timeout=1500)
+                                    clicked_popup = True
                                     break
                                 except Exception:
                                     continue
+                        if not clicked_popup:
+                            # Si no encontró texto exacto, hacemos clic en el primer elemento visible del menú desplegable
+                            page.locator(".cdk-overlay-pane button, .mat-mdc-menu-content button").first.click()
+                    else:
+                        # Si no hay menú y el botón descargaba directo, forzamos clic alternativo
+                        page.locator("button[title*='xls'], button[title*='Exportar']").first.click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
