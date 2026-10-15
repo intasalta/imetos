@@ -11,8 +11,12 @@ ESTACIONES = ["00002586", "00002646"]
 
 def run():
     with sync_playwright() as p:
+        # Iniciamos con un tamaño de pantalla fijo de escritorio (1920x1080) para que la interfaz no varíe
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(accept_downloads=True)
+        context = browser.new_context(
+            viewport={"width": 1920, "height": 1080},
+            accept_downloads=True
+        )
         page = context.new_page()
 
         print("1. Accediendo a FieldClimate...")
@@ -48,15 +52,23 @@ def run():
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
-                # Paso 1: Clic en el botón de la barra superior para abrir el menú de exportación
-                page.evaluate("() => { const buttons = Array.from(document.querySelectorAll('button')); for (let btn of buttons) { const rect = btn.getBoundingClientRect(); if (rect.top > 200 && rect.top < 300 && rect.left > 700) { btn.click(); break; } } }")
+                # Paso 1: Hacemos clic en el botón de exportación usando la barra de herramientas superior con la nueva resolución fija
+                page.evaluate("""() => {
+                    const buttons = Array.from(document.querySelectorAll('button'));
+                    for (let btn of buttons) {
+                        const rect = btn.getBoundingClientRect();
+                        // Con viewport de 1920x1080, el botón de exportación de la gráfica se ubica en esta área superior derecha
+                        if (rect.top > 250 && rect.top < 400 && rect.left > 1200) {
+                            btn.click();
+                            break;
+                        }
+                    }
+                }""")
                 
-                # Paso 2: Esperar el menú flotante y capturar la descarga al hacer clic en XLS
+                # Paso 2: Esperamos que aparezca el menú flotante y capturamos la descarga al hacer clic en la opción de XLS
                 with page.expect_download(timeout=45000) as download_info:
-                    # Esperamos a que el panel desplegable de Angular esté visible
-                    page.wait_for_selector(".cdk-overlay-pane", timeout=10000)
-                    
-                    # Hacemos clic en la opción de Excel/XLS dentro del menú flotante
+                    page.wait_for_selector(".cdk-overlay-pane", timeout=12000)
+                    time.sleep(1)
                     page.locator(".cdk-overlay-pane button, .cdk-overlay-pane a, .cdk-overlay-pane div").filter(has_text=re.compile("xls|excel|exportar", re.IGNORECASE)).first.click()
 
                 download = download_info.value
