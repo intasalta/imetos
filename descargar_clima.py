@@ -48,33 +48,12 @@ def run():
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Buscamos el botón de descarga en la barra superior usando una evaluación directa de JavaScript
-                    # que localiza el botón de exportación por su posición y hace clic en él y en su opción de XLS
-                    page.evaluate("""() => {
-                        const buttons = Array.from(document.querySelectorAll('button'));
-                        for (let btn of buttons) {
-                            const rect = btn.getBoundingClientRect();
-                            // El botón de descarga está en la barra superior de herramientas (rango Y entre 200 y 300)
-                            if (rect.top > 200 && rect.top < 300 && rect.left > 700) {
-                                btn.click();
-                                break;
-                            }
-                        }
-                    """)
+                    # Ejecutamos JS en una sola línea de manera limpia
+                    page.evaluate("() => { const buttons = Array.from(document.querySelectorAll('button')); for (let btn of buttons) { const rect = btn.getBoundingClientRect(); if (rect.top > 200 && rect.top < 300 && rect.left > 700) { btn.click(); break; } } }")
                     
                     time.sleep(2)
                     
-                    # Hacemos clic en la opción del menú flotante que aparece para confirmar la descarga en XLS
-                    page.evaluate("""() => {
-                        const items = Array.from(document.querySelectorAll('button, a, div, span, mat-option'));
-                        for (let item of items) {
-                            const text = item.innerText.toLowerCase();
-                            if (text.includes('xls') || text.includes('excel') || text.includes('exportar')) {
-                                item.click();
-                                break;
-                            }
-                        }
-                    """)
+                    page.evaluate("() => { const items = Array.from(document.querySelectorAll('button, a, div, span, mat-option')); for (let item of items) { const text = item.innerText.toLowerCase(); if (text.includes('xls') || text.includes('excel') || text.includes('exportar')) { item.click(); break; } } }")
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
