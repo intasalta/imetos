@@ -40,32 +40,38 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo para que cargue la interfaz completa
+            time.sleep(15) # Tiempo prudencial para que cargue toda la interfaz y gráficos
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Buscamos los botones de acción superior que contienen gráficos/iconos SVG
-                    action_buttons = page.locator("button:has(svg), button:has(mat-icon), button[mat-icon-button]")
+                    # Buscamos de manera muy amplia cualquier botón dentro de la sección de controles de datos
+                    # Usamos un selector basado en la barra de herramientas superior de las gráficas
+                    download_button = page.locator("button").filter(has=page.locator("mat-icon, svg, i")).first
+                    
+                    # Intentamos ubicar el botón por el orden en la botonera superior (el de descarga es de los primeros)
+                    buttons = page.locator("button")
+                    count = buttons.count()
                     
                     clicked = False
-                    count = action_buttons.count()
-                    
-                    # Iteramos sobre los botones de la barra superior haciendo hover y clic
                     for i in range(count):
-                        btn = action_buttons.nth(i)
-                        try:
-                            btn.hover(timeout=1000)
-                            # Intentamos hacer clic; el botón de descarga XLS responderá a la descarga
-                            btn.click(timeout=1000)
-                            clicked = True
-                            break
-                        except Exception:
-                            continue
+                        b = buttons.nth(i)
+                        # Verificamos si el botón está visible en la zona superior de la gráfica
+                        if b.is_visible():
+                            box = b.bounding_box()
+                            # La barra de herramientas superior suele estar en un rango específico de coordenadas Y
+                            if box and 200 < box['y'] < 350: 
+                                # Probamos haciendo clic en los botones que están en esa barra horizontal
+                                try:
+                                    b.click(timeout=2000)
+                                    clicked = True
+                                    break
+                                except Exception:
+                                    continue
                     
                     if not clicked:
-                        # Respaldo: clic en el primer botón con SVG disponible
-                        page.locator("button:has(svg)").first.click()
+                        # Fallback directo si no encuentra por coordenadas: clic en el botón de exportación general
+                        page.locator("button").nth(15).click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
