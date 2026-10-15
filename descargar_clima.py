@@ -1,5 +1,7 @@
 import os
 import time
+import subprocess
+import re
 from playwright.sync_api import sync_playwright
 
 USER = os.environ.get("FC_USER")
@@ -35,6 +37,8 @@ def run():
         time.sleep(10)
         page.wait_for_load_state("networkidle")
 
+        archivos_descargados = []
+
         for est_id in ESTACIONES:
             station_url = f"https://fieldclimate.com/station/{est_id}/data"
             print(f"4. Navegando a la estación {est_id}: {station_url}")
@@ -45,7 +49,7 @@ def run():
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # 1. Hacemos clic en el botón de exportación de la barra superior (encontrado por coordenadas)
+                    # Clic en el botón de exportación de la barra superior por coordenadas
                     buttons = page.locator("button")
                     count = buttons.count()
                     for i in range(count):
@@ -59,7 +63,7 @@ def run():
                                 except Exception:
                                     continue
                     
-                    # 2. Esperamos a que se abra el menú flotante y hacemos clic en la opción de XLS/Excel o confirmar
+                    # Esperar el menú flotante y hacer clic en la opción de XLS/Excel
                     time.sleep(2)
                     popup_options = page.locator("button, a, div, span").filter(has_text=re.compile("xls|excel|download|descargar", re.IGNORECASE))
                     if popup_options.count() > 0:
@@ -75,7 +79,8 @@ def run():
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
                 download.save_as(filename)
-                print(f"¡Éxito! Archivo guardado como {filename}")
+                archivos_descargados.append(filename)
+                print(f"¡Éxito! Archivo guardado localmente como {filename}")
                 
             except Exception as e:
                 print(f"Error al descargar la estación {est_id}: {e}")
@@ -85,6 +90,19 @@ def run():
                 raise e
 
         browser.close()
+
+        # Sincronizar y hacer commit automático de los archivos descargados al repositorio
+        if archivos_descargados:
+            print("6. Subiendo archivos descargados al repositorio de GitHub...")
+            subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
+            subprocess.run(["git", "config", "--global", "user.email", "actions@github.com"])
+            
+            for f in archivos_descargados:
+                subprocess.run(["git", "add", f])
+                
+            subprocess.run(["git", "commit", "-m", "Actualización automática de datos climáticos .xls"])
+            subprocess.run(["git", "push"])
+            print("¡Archivos subidos y guardados en el repositorio correctamente!")
 
 if __name__ == "__main__":
     run()
