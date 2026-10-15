@@ -40,28 +40,14 @@ def run():
             print(f"4. Navegando a la estación {est_id}: {station_url}")
             page.goto(station_url, timeout=60000)
             page.wait_for_load_state("networkidle")
-            time.sleep(15) # Tiempo prudencial para que cargue toda la data y gráficos
+            time.sleep(15)
 
             print(f"5. Intentando descargar el archivo para la estación {est_id}...")
             try:
                 with page.expect_download(timeout=45000) as download_info:
-                    # Buscamos de manera directa por el título que muestra el tooltip en español o inglés
-                    download_button = page.locator("button[title*='Exportar'], button[title*='xls'], button:has(.fa-download), button:has(i.fa-download)").first
-                    
-                    if download_button.count() > 0 and download_button.is_visible():
-                        download_button.click()
-                    else:
-                        # Si no lo encuentra por selector directo, ejecutamos JS seguro para hacer clic en el botón de exportación
-                        page.evaluate("""() => {
-                            const buttons = Array.from(document.querySelectorAll('button'));
-                            for (let btn of buttons) {
-                                const title = btn.getAttribute('title') || '';
-                                if (title.toLowerCase().includes('exportar') || title.toLowerCase().includes('xls') || btn.innerHTML.includes('fa-download')) {
-                                    btn.click();
-                                    break;
-                                }
-                            }
-                        """)
+                    # Buscamos directamente el botón por su título visible en español o por el icono de descarga
+                    download_button = page.locator("button[title*='Exportar'], button[title*='xls'], button:has(.fa-download)").first
+                    download_button.click()
 
                 download = download_info.value
                 filename = f"{est_id}_station_data.xls"
