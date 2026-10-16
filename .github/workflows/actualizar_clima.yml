@@ -19,7 +19,7 @@ jobs:
 
       - name: Instalar dependencias
         run: |
-          pip install playwright
+          pip install playwright pandas openpyxl
           playwright install chromium
 
       - name: Ejecutar script de descarga
@@ -40,6 +40,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          git add *_station_data.xls
-          git commit -m "Actualización automática de estaciones meteorológicas [skip ci]" || echo "No hay cambios para commitear"
+          git add *_station_data.*
+          git commit -m "Actualización automática de estaciones meteorológicas (.xls, .csv, .xlsx) [skip ci]" || echo "No hay cambios para commitear"
           git push
