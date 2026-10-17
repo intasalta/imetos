@@ -8,6 +8,8 @@ on:
 jobs:
   descargar-datos:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Copiar repositorio
         uses: actions/checkout@v4
@@ -44,6 +46,7 @@ jobs:
           git config --global user.email "actions@github.com"
           # Esto configura la URL con el token automático para que el push tenga permisos
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git pull --rebase
           git add *_station_data.*
           git commit -m "Actualización automática de estaciones meteorológicas (.xls, .csv, .xlsx) [skip ci]" || echo "No hay cambios para commitear"
           git push
