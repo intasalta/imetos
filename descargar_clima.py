@@ -105,7 +105,7 @@ def run():
         page = context.new_page()
 
         print("1. Accediendo a la página de inicio de sesión...")
-        page.goto("https://fieldclimate.com/auth/login", wait_until="commit", timeout=45000)
+        page.goto("https://fieldclimate.com/auth/login", wait_until="commit", timeout=60000)
 
         print("2. Esperando que el formulario se renderice...")
         page.wait_for_selector("input[type='password']", timeout=90000)
@@ -121,7 +121,8 @@ def run():
         page.locator("button:has-text('Sign In'), button[type='submit']").first.click()
 
         print("Esperando redirección del login...")
-        page.wait_for_url(lambda u: "/auth/login" not in u, timeout=45000)
+        # page.wait_for_url(lambda u: "/auth/login" not in u, timeout=45000)
+        page.wait_for_selector("a[href*='/station/'], .navbar, .sidebar", timeout=60000)
         print(f"Sesión iniciada correctamente. URL actual: {page.url}")
         time.sleep(3)
 
