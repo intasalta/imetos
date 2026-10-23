@@ -100,35 +100,82 @@ def run():
         )
         context = browser.new_context(
             viewport={"width": 1920, "height": 1080},
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             accept_downloads=True
         )
         page = context.new_page()
 
-        print("1. Accediendo a la página de inicio de sesión...")
-        page.goto("https://fieldclimate.com/auth/login", wait_until="commit", timeout=60000)
+        try:
+            print("1. Accediendo a la página de inicio de sesión...")
+            page.goto("https://fieldclimate.com/auth/login", wait_until="commit", timeout=60000)
 
-        print("2. Esperando que el formulario se renderice...")
-        page.wait_for_selector("input[type='password']", timeout=90000)
-        time.sleep(1)
+            print("2. Esperando que el formulario se renderice...")
+            page.wait_for_selector("input[type='password']", timeout=90000)
+            time.sleep(1)
 
-        print("3. Rellenando credenciales...")
-        page.locator("input").first.fill(USER)
-        time.sleep(0.5)
-        page.locator("input[type='password']").first.fill(PASS)
-        time.sleep(0.5)
+            print("3. Rellenando credenciales...")
+            page.locator("input").first.fill(USER)
+            time.sleep(0.5)
+            page.locator("input[type='password']").first.fill(PASS)
+            time.sleep(0.5)
 
-       
+            print("4. Iniciando sesión...")
+            page.locator("button:has-text('Sign In'), button[type='submit']").first.click()
 
-        print("4. Iniciando sesión...")
-        page.locator("button:has-text('Sign In'), button[type='submit']").first.click()
+            print("Esperando redirección del login o respuesta del servidor...")
+            inicio_espera = time.time()
+            login_exitoso = False
+            mensaje_error = None
 
-        print("Esperando redirección del login...")
-        # En lugar de buscar selectores antiguos que ya no existen, esperemos a que cambie la URL o aparezca el contenedor general
-        page.wait_for_url(lambda u: "/auth/login" not in u, timeout=60000)
-        page.wait_for_load_state("networkidle", timeout=30000)
-        print(f"Sesión iniciada correctamente. URL actual: {page.url}")
-        time.sleep(3)
-        
+            while time.time() - inicio_espera < 60:
+                if "/auth/login" not in page.url:
+                    login_exitoso = True
+                    break
+
+                # Revisar si hay un aviso de error / outage en pantalla
+                try:
+                    body_text = page.inner_text("body").lower()
+                    if any(t in body_text for t in ["outage", "currently facing", "invalid", "error", "mantenimiento"]):
+                        for sel in [".alert", "[role='alert']", ".text-danger", "div:has-text('outage')", "div:has-text('facing')"]:
+                            elem = page.locator(sel).first
+                            if elem.count() > 0 and elem.is_visible():
+                                txt = elem.inner_text().strip()
+                                if txt and len(txt) > 5:
+                                    mensaje_error = txt
+                                    break
+                        if not mensaje_error:
+                            mensaje_error = "Se detectó un mensaje de aviso/error en el portal de FieldClimate."
+                        break
+                except Exception:
+                    pass
+
+                time.sleep(1.5)
+
+            if not login_exitoso:
+                page.screenshot(path="error_login.png", full_page=True)
+                if mensaje_error:
+                    raise RuntimeError(
+                        f"\n[ALERTA FIELDCLIMATE] El servidor de FieldClimate rechazó el acceso o está caído:\n"
+                        f"Mensaje en pantalla: \"{mensaje_error}\"\n"
+                        f"(Captura guardada en error_login.png)"
+                    )
+                else:
+                    raise TimeoutError(
+                        f"No se pudo completar el login tras 60s. URL: {page.url}. "
+                        f"(Captura guardada en error_login.png)"
+                    )
+
+            print(f"Sesión iniciada correctamente. URL actual: {page.url}")
+            time.sleep(3)
+
+        except Exception as login_err:
+            if not os.path.exists("error_login.png"):
+                try:
+                    page.screenshot(path="error_login.png", full_page=True)
+                except Exception:
+                    pass
+            browser.close()
+            raise login_err
 
         archivos_generados = []
 
