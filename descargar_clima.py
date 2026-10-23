@@ -117,14 +117,18 @@ def run():
         page.locator("input[type='password']").first.fill(PASS)
         time.sleep(0.5)
 
+       
+
         print("4. Iniciando sesión...")
         page.locator("button:has-text('Sign In'), button[type='submit']").first.click()
 
         print("Esperando redirección del login...")
-        # page.wait_for_url(lambda u: "/auth/login" not in u, timeout=45000)
-        page.wait_for_selector("a[href*='/station/'], .navbar, .sidebar", timeout=60000)
+        # En lugar de buscar selectores antiguos que ya no existen, esperemos a que cambie la URL o aparezca el contenedor general
+        page.wait_for_url(lambda u: "/auth/login" not in u, timeout=60000)
+        page.wait_for_load_state("networkidle", timeout=30000)
         print(f"Sesión iniciada correctamente. URL actual: {page.url}")
         time.sleep(3)
+        
 
         archivos_generados = []
 
