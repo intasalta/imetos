@@ -132,13 +132,367 @@
 </Row>
 <Row>
 <Cell>
+<Data ss:Type="String">2026-11-11 02:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">26.19</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">26.92</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">25.25</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.6</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.71</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.53</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">49.61</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">52.23</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">47.55</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6454</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
+<Data ss:Type="String">2026-11-11 01:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">27.36</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">27.63</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">26.99</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.6</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.94</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.85</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">46.41</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">48.54</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">45.17</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6451</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
+<Data ss:Type="String">2026-11-11 00:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">27.54</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">28.18</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">27.02</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">15.1</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.95</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">1.83</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">46.88</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">48.64</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">44.27</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6457</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
+<Data ss:Type="String">2026-11-10 23:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">28.31</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">28.7</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">27.89</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.6</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">14.2</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">2.17</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">2.04</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">43.49</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">45.5</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">41.26</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6462</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">9</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">9</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">8</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
+<Data ss:Type="String">2026-11-10 22:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">29.06</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">29.44</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">28.88</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">13.1</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">12.6</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">2.5</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">2.34</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">37.62</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">41.09</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">35.83</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6459</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">10</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">10</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">9</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
+<Data ss:Type="String">2026-11-10 21:00:00</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">31.83</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">32.25</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">31.16</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">12.2</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">11.9</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">3.27</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">3.06</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">30.39</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">32.29</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">28.98</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">6462</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">12</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">13</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">12</Data>
+</Cell>
+<Cell>
+<Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row>
+<Cell>
 <Data ss:Type="String">2026-11-10 20:00:00</Data>
 </Cell>
 <Cell>
-<Data ss:Type="Number">31.5</Data>
+<Data ss:Type="Number">31.62</Data>
 </Cell>
 <Cell>
-<Data ss:Type="Number">32.01</Data>
+<Data ss:Type="Number">32.05</Data>
 </Cell>
 <Cell>
 <Data ss:Type="Number">31.22</Data>
@@ -153,13 +507,13 @@
 <Data ss:Type="Number">0</Data>
 </Cell>
 <Cell>
-<Data ss:Type="Number">3.23</Data>
+<Data ss:Type="Number">3.26</Data>
 </Cell>
 <Cell>
 <Data ss:Type="Number">3.14</Data>
 </Cell>
 <Cell>
-<Data ss:Type="Number">30.05</Data>
+<Data ss:Type="Number">29.87</Data>
 </Cell>
 <Cell>
 <Data ss:Type="Number">31.07</Data>
@@ -2594,360 +2948,6 @@
 </Cell>
 <Cell>
 <Data ss:Type="Number">6454</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">7</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-09 02:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">19.83</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.15</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">19.15</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">10.9</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">8.9</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.99</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.8</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">56.72</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">63.75</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">48.48</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6448</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-09 01:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">19.92</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.12</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">19.72</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.8</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.7</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.84</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.82</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">63.75</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">64.76</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">62.74</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6457</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-09 00:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.06</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.22</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">19.78</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.8</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.7</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.85</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.78</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">63.54</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">65.77</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">62.1</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6465</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-08 23:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.41</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.64</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.1</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">12.3</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.93</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.86</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">60.89</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">63.04</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">59.07</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6468</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-08 22:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.44</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.69</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.27</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">11.6</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">11.2</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">1.02</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0.98</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">57.11</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">59</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">55.72</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6471</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-</Row>
-<Row>
-<Cell>
-<Data ss:Type="String">2026-11-08 21:00:00</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">21.09</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">22.13</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">20.27</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">10.7</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">10.4</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">1.21</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">1.06</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">51.65</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">55.5</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">47.59</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">0</Data>
-</Cell>
-<Cell>
-<Data ss:Type="Number">6482</Data>
 </Cell>
 <Cell>
 <Data ss:Type="Number">6</Data>
