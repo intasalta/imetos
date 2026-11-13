@@ -1,5 +1,6 @@
 ﻿Fecha / Hora,Temperatura del aire HC [°C] - promedio,Temperatura del aire HC [°C] - máx,Temperatura del aire HC [°C] - mín,Punto de Rocío [°C] - promedio,Punto de Rocío [°C] - mín,Radiación solar [W/m2] - promedio,Humedad relativa HC [%] - promedio,Humedad relativa HC [%] - máx,Humedad relativa HC [%] - mín,Precipitación [mm] - sum,Velocidad de viento [m/s] - promedio,Velocidad de viento [m/s] - máx,Batería [mV] - última,ET0 [mm]
-2026-11-12 20:00:00,27.39,28.33,26.08,18.9,17.5,0,60.8,68.04,52.36,0,1.9,2.7,6074,
+2026-11-12 21:00:00,25.67,25.94,25.49,19.2,19.1,0,68.22,69.41,66.34,0,1.6,1.7,6074,
+2026-11-12 20:00:00,26.98,28.33,25.47,18.9,17.5,0,62.13,68.04,52.36,0,2.0,2.8,6074,
 2026-11-12 19:00:00,28.99,30.49,27.64,20.9,19.9,15,62.91,75.61,54.73,0,3.1,5.4,6092,
 2026-11-12 18:00:00,30.72,33.77,28.18,22.9,21.0,26,63.92,74.23,56.5,0,1.0,3.0,6092,
 2026-11-12 17:00:00,34.92,38.55,32.98,24.0,20.0,96,55.24,67.73,35.27,0,0.1,0.8,6102,
